@@ -1,5 +1,8 @@
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.List;
 
 public class MergeSort {
     public static void main(String[] args)
@@ -38,29 +41,21 @@ public class MergeSort {
 
     private static void merge(final int[] arr, int l, int m, int r){
         // Arrays to store parts
-        final int[] leftSubarray = new int[m-l+1];
-        final int[] rightSubarray = new int[r-m];
-
-        // Write data in arrays
-        for (int i = 0; i < leftSubarray.length; ++i){
-            leftSubarray[i] = arr[l + i];
-        }
-        for (int i = 0; i < rightSubarray.length; ++i){
-            rightSubarray[i] = arr[m + 1 + i];
-        }
+        final List<Integer> leftSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, l, m + 1)).boxed().collect(Collectors.toList()));
+        final List<Integer> rightSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, m + 1, r + 1)).boxed().collect(Collectors.toList()));
 
         // Initialize indexes
         int i = 0, j = 0, writeIndex = l;
-        while (i < leftSubarray.length && j < rightSubarray.length){
-            if (leftSubarray[i] < rightSubarray[j]){
-                if (arr[writeIndex] != leftSubarray[i]){
-                    arr[writeIndex] = leftSubarray[i];
+        while (i < leftSubarray.size() && j < rightSubarray.size()){
+            if (leftSubarray.get(i) < rightSubarray.get(j)){
+                if (arr[writeIndex] != leftSubarray.get(i)){
+                    arr[writeIndex] = leftSubarray.get(i);
                 }
                 ++i;
             }
             else{
-                if (arr[writeIndex] != rightSubarray[j]){
-                    arr[writeIndex] = rightSubarray[j];
+                if (arr[writeIndex] != rightSubarray.get(j)){
+                    arr[writeIndex] = rightSubarray.get(j);
                 }
                 ++j;
             }
@@ -68,16 +63,16 @@ public class MergeSort {
         }
 
         // Add values if something left
-        while (i < leftSubarray.length){
-            if (arr[writeIndex] != leftSubarray[i]){
-                arr[writeIndex] = leftSubarray[i];
+        while (i < leftSubarray.size()){
+            if (arr[writeIndex] != leftSubarray.get(i)){
+                arr[writeIndex] = leftSubarray.get(i);
             }
             ++i;
             ++writeIndex;
         }
-        while(j < rightSubarray.length){
-            if (arr[writeIndex] != rightSubarray[j]){
-                arr[writeIndex] = rightSubarray[j];
+        while(j < rightSubarray.size()){
+            if (arr[writeIndex] != rightSubarray.get(j)){
+                arr[writeIndex] = rightSubarray.get(j);
             }
             ++j;
             ++writeIndex;
