@@ -1,8 +1,5 @@
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.List;
 
 public class MergeSort {
     public static void main(String[] args)
@@ -40,21 +37,22 @@ public class MergeSort {
 
     private static void merge(final int[] arr, final int leftIndex, final int midIndex, final int rightIndex){
         // Arrays to store parts
-        final List<Integer> leftSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, leftIndex, midIndex + 1)).boxed().collect(Collectors.toList()));
-        final List<Integer> rightSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, midIndex + 1, rightIndex + 1)).boxed().collect(Collectors.toList()));
+        final int[] leftSubarray = Arrays.copyOfRange(arr, leftIndex, midIndex + 1);
+        final int[] rightSubarray = Arrays.copyOfRange(arr, midIndex + 1, rightIndex + 1);
+
 
         // Initialize indexes
         int i = 0, j = 0, writeIndex = leftIndex;
-        while (i < leftSubarray.size() && j < rightSubarray.size()){
-            if (leftSubarray.get(i) < rightSubarray.get(j)){
-                if (arr[writeIndex] != leftSubarray.get(i)){
-                    arr[writeIndex] = leftSubarray.get(i);
+        while (i < leftSubarray.length && j < rightSubarray.length){
+            if (leftSubarray[i] < rightSubarray[j]){
+                if (arr[writeIndex] != leftSubarray[i]){
+                    arr[writeIndex] = leftSubarray[i];
                 }
                 ++i;
             }
             else{
-                if (arr[writeIndex] != rightSubarray.get(j)){
-                    arr[writeIndex] = rightSubarray.get(j);
+                if (arr[writeIndex] != rightSubarray[j]){
+                    arr[writeIndex] = rightSubarray[j];
                 }
                 ++j;
             }
@@ -62,16 +60,16 @@ public class MergeSort {
         }
 
         // Add values if something left
-        while (i < leftSubarray.size()){
-            if (arr[writeIndex] != leftSubarray.get(i)){
-                arr[writeIndex] = leftSubarray.get(i);
+        while (i < leftSubarray.length){
+            if (arr[writeIndex] != leftSubarray[i]){
+                arr[writeIndex] = leftSubarray[i];
             }
             ++i;
             ++writeIndex;
         }
-        while(j < rightSubarray.size()){
-            if (arr[writeIndex] != rightSubarray.get(j)){
-                arr[writeIndex] = rightSubarray.get(j);
+        while(j < rightSubarray.length){
+            if (arr[writeIndex] != rightSubarray[j]){
+                arr[writeIndex] = rightSubarray[j];
             }
             ++j;
             ++writeIndex;
