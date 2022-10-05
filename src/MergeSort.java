@@ -9,8 +9,6 @@ public class MergeSort {
     {
         final int arr[] = new int[100];
         IntStream.range(0, 100).forEach(index -> arr[index] = (int)(Math.random() * 500));
-
-
         mergeSort(arr, 0, arr.length-1);
         for (int el : arr){
             System.out.print(el + " ");
@@ -28,24 +26,25 @@ public class MergeSort {
         }
     }
 
-    public static void mergeSort(final int[] arr, int l, int r) throws NullPointerException{
+    public static void mergeSort(final int[] arr, final int leftIndex, final int rightIndex) throws NullPointerException, ArrayIndexOutOfBoundsException{
         if (arr == null) throw new NullPointerException("arr cannot be null");
-        if (l < r){
-            final int m = (r + l) / 2;
+        if (leftIndex < 0 || rightIndex >= arr.length) throw new ArrayIndexOutOfBoundsException("Incorrect indexes was passed");
+        if (leftIndex < rightIndex){
+            final int midIndex = (rightIndex + leftIndex) / 2;
 
-            mergeSort(arr, l, m);
-            mergeSort(arr, m+1, r);
-            merge(arr, l, m, r);
+            mergeSort(arr, leftIndex, midIndex);
+            mergeSort(arr, midIndex+1, rightIndex);
+            merge(arr, leftIndex, midIndex, rightIndex);
         }
     }
 
-    private static void merge(final int[] arr, int l, int m, int r){
+    private static void merge(final int[] arr, final int leftIndex, final int midIndex, final int rightIndex){
         // Arrays to store parts
-        final List<Integer> leftSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, l, m + 1)).boxed().collect(Collectors.toList()));
-        final List<Integer> rightSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, m + 1, r + 1)).boxed().collect(Collectors.toList()));
+        final List<Integer> leftSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, leftIndex, midIndex + 1)).boxed().collect(Collectors.toList()));
+        final List<Integer> rightSubarray = Collections.unmodifiableList(Arrays.stream(Arrays.copyOfRange(arr, midIndex + 1, rightIndex + 1)).boxed().collect(Collectors.toList()));
 
         // Initialize indexes
-        int i = 0, j = 0, writeIndex = l;
+        int i = 0, j = 0, writeIndex = leftIndex;
         while (i < leftSubarray.size() && j < rightSubarray.size()){
             if (leftSubarray.get(i) < rightSubarray.get(j)){
                 if (arr[writeIndex] != leftSubarray.get(i)){
